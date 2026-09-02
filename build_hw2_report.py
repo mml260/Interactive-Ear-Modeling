@@ -373,7 +373,7 @@ def build_report():
         'J. Zwislocki, “Analysis of the Middle-Ear Function. Part I: Input Impedance,” JASA 34, 1514–1523 (1962), DOI: 10.1121/1.1918382.',
         'K. N. O’Connor and S. Puria, “Middle-ear circuit model parameters based on a population of human ears,” JASA 123, 197–211 (2008), DOI: 10.1121/1.2817358.',
         'E. Merchant and S. T. Neely, “Effects of middle ear pathology on middle ear impedance in chinchillas,” JASA 150, 969 (2021), DOI: 10.1121/10.0005822.',
-        'E. Merchant and S. T. Neely, “A model of middle-ear impedance in children with otitis media with effusion,” Ear and Hearing (2022), DOI: 10.1097/AUD.0000000000001317.',
+        'G. R. Merchant and S. T. Neely, “Conductive Hearing Loss Estimated From Wideband Acoustic Immittance Measurements in Ears With Otitis Media With Effusion,” Ear and Hearing 44(4), 721–731 (2023), DOI: 10.1097/AUD.0000000000001317.',
     ]:
         p = doc.add_paragraph()
         p.paragraph_format.left_indent = Inches(0.18)

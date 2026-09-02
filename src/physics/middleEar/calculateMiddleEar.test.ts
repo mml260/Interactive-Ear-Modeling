@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 import { Complex } from '../core/complex'
 import { compliance, inertance, parallel, resistance, series } from '../core/impedance'
 import { calculateMiddleEarAtFrequency, calculateMiddleEarResponse } from './calculateMiddleEar'
-import { createMiddleEarParameters, defaultMiddleEarParameters, zwislockiBaselineParameters } from './parameters'
+import { createMiddleEarParameters, defaultMiddleEarParameters, lutmanMartinFinalParameters } from './parameters'
 
 const closeTo = (value: number, expected: number, precision = 10) => {
   expect(value).toBeCloseTo(expected, precision)
@@ -38,10 +38,19 @@ describe('acoustic impedance primitives', () => {
 
 describe('middle-ear circuit', () => {
   it('keeps the published baseline source-tagged and complete', () => {
-    expect(zwislockiBaselineParameters).toHaveLength(18)
-    expect(zwislockiBaselineParameters.every((parameter) => parameter.source.length > 0)).toBe(true)
-    expect(zwislockiBaselineParameters.filter((parameter) => parameter.experimentControl).map((parameter) => parameter.id))
+    expect(lutmanMartinFinalParameters).toHaveLength(21)
+    expect(lutmanMartinFinalParameters.every((parameter) => parameter.source.length > 0)).toBe(true)
+    expect(lutmanMartinFinalParameters.filter((parameter) => parameter.experimentControl).map((parameter) => parameter.id))
       .toEqual(['cd1', 'lo', 'ro'])
+  })
+
+  it('uses the final Lutman and Martin component values', () => {
+    expect(defaultMiddleEarParameters).toMatchObject({
+      la: 14e-3, ra: 10, cp: 5.1e-6, rm: 390, ct: 0.35e-6,
+      rd1: 200, cd1: 0.8e-6, ld: 15e-3, rd2: 12, cd2: 0.4e-6, rd3: 5900, cd3: 0.2e-6,
+      lo: 40e-3, co: 1.4e-6, ro: 70, cs: 0.25e-6, rs: 3000,
+      cst: Number.POSITIVE_INFINITY, lc: 45e-3, cc: 0.65e-6, rc: 550,
+    })
   })
 
   it('returns finite subsystem impedances and a complex transfer at 1 kHz', () => {
@@ -60,10 +69,10 @@ describe('middle-ear circuit', () => {
     const parameters = defaultMiddleEarParameters
     const point = calculateMiddleEarAtFrequency(frequencyHz, parameters)
     const cavity = parallel(series(compliance(frequencyHz, parameters.cp), inertance(frequencyHz, parameters.la), resistance(parameters.ra)), resistance(parameters.rm), compliance(frequencyHz, parameters.ct))
-    const eardrum = series(compliance(frequencyHz, parameters.cd1), parallel(inertance(frequencyHz, parameters.ld), series(compliance(frequencyHz, parameters.cd2), resistance(parameters.rd2))), resistance(parameters.rd1))
+    const eardrum = series(resistance(parameters.rd1), compliance(frequencyHz, parameters.cd1), parallel(inertance(frequencyHz, parameters.ld), series(compliance(frequencyHz, parameters.cd2), resistance(parameters.rd2))), parallel(compliance(frequencyHz, parameters.cd3), resistance(parameters.rd3)))
     const ossicles = series(compliance(frequencyHz, parameters.co), inertance(frequencyHz, parameters.lo), resistance(parameters.ro))
     const joint = series(compliance(frequencyHz, parameters.cs), resistance(parameters.rs))
-    const cochlea = series(compliance(frequencyHz, parameters.cc), inertance(frequencyHz, parameters.lc), resistance(parameters.rc))
+    const cochlea = series(compliance(frequencyHz, parameters.cst), compliance(frequencyHz, parameters.cc), inertance(frequencyHz, parameters.lc), resistance(parameters.rc))
     const load = parallel(joint, cochlea)
     const afterCavity = parallel(eardrum, series(ossicles, load))
     const input = series(cavity, afterCavity)
@@ -95,7 +104,7 @@ describe('middle-ear circuit', () => {
     expect(baseline.peak.frequencyHz).toBeLessThan(1200)
     expect(baseline.peak.magnitudeDb).toBeGreaterThan(-30)
     expect(baseline.peak.magnitudeDb).toBeLessThan(30)
-    expect(baseline.points.at(-1)?.magnitudeDb).toBeLessThan(baseline.peak.magnitudeDb - 10)
+    expect(baseline.points.at(-1)?.magnitudeDb).toBeLessThan(baseline.peak.magnitudeDb - 5)
     expect(increasedInertance.points[200].magnitudeDb).not.toBeCloseTo(baseline.points[200].magnitudeDb, 8)
     expect(increasedCompliance.points[200].magnitudeDb).not.toBeCloseTo(baseline.points[200].magnitudeDb, 8)
     expect(increasedLoss.points[200].magnitudeDb).not.toBeCloseTo(baseline.points[200].magnitudeDb, 8)

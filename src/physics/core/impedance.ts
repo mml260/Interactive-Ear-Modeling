@@ -27,8 +27,8 @@ export function inertance(frequencyHz: number, valueHenries: number): Complex {
 
 export function compliance(frequencyHz: number, valueFarads: number): Complex {
   assertPositiveFrequency(frequencyHz)
-  if (!Number.isFinite(valueFarads) || valueFarads <= 0) {
-    throw new RangeError('Compliance must be a finite value greater than 0 F.')
+  if (Number.isNaN(valueFarads) || valueFarads <= 0) {
+    throw new RangeError('Compliance must be greater than 0 F.')
   }
   return new Complex(0, -1 / (TWO_PI * frequencyHz * valueFarads))
 }

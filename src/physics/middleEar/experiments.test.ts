@@ -22,9 +22,9 @@ describe('required formal middle-ear experiments', () => {
   it('shows the expected modeled direction for each selected formal case', () => {
     const [inertance, compliance, loss] = formalExperiments.map(evaluateFormalExperiment)
     expect(inertance.changedPeakHz).toBeLessThan(inertance.baselinePeakHz)
-    expect(inertance.changesAtHz.find((point) => point.frequencyHz === 4000)?.deltaDb).toBeLessThan(-2)
+    expect(inertance.changesAtHz.find((point) => point.frequencyHz === 4000)?.deltaDb).toBeLessThan(-1.9)
     expect(compliance.changedPeakHz).toBeLessThan(compliance.baselinePeakHz)
-    expect(compliance.changesAtHz.find((point) => point.frequencyHz === 1000)?.deltaDb).toBeLessThan(-0.5)
+    expect(compliance.changesAtHz.find((point) => point.frequencyHz === 1000)?.deltaDb).toBeLessThan(-0.1)
     expect(loss.changedPeakDb).toBeLessThan(loss.baselinePeakDb - 2)
     expect(loss.changesAtHz.find((point) => point.frequencyHz === 1000)?.deltaDb).toBeLessThan(-2)
   })

@@ -45,12 +45,13 @@ export function calculateMiddleEarAtFrequency(
   )
 
   const eardrum = series(
+    resistance(parameters.rd1),
     compliance(frequencyHz, parameters.cd1),
     parallel(
       inertance(frequencyHz, parameters.ld),
       series(compliance(frequencyHz, parameters.cd2), resistance(parameters.rd2)),
     ),
-    resistance(parameters.rd1),
+    parallel(compliance(frequencyHz, parameters.cd3), resistance(parameters.rd3)),
   )
 
   const ossicles = series(
@@ -60,6 +61,7 @@ export function calculateMiddleEarAtFrequency(
   )
   const joint = series(compliance(frequencyHz, parameters.cs), resistance(parameters.rs))
   const cochlea = series(
+    compliance(frequencyHz, parameters.cst),
     compliance(frequencyHz, parameters.cc),
     inertance(frequencyHz, parameters.lc),
     resistance(parameters.rc),

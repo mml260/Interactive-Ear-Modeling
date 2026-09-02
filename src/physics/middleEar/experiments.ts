@@ -33,8 +33,8 @@ export const formalExperiments: readonly FormalExperiment[] = [
   },
   {
     id: 'compliance', number: '02', title: 'Eardrum compliance', parameter: 'CD1',
-    baselineDisplay: '0.23 μF', changedDisplay: '0.50 μF (+117%)', overrides: { cd1: 0.5e-6 },
-    prediction: 'More eardrum compliance should change the eardrum branch loading and alter the middle-frequency transfer around the broad peak.',
+    baselineDisplay: '0.80 μF', changedDisplay: '0.10 μF (−87.5%)', overrides: { cd1: 0.1e-6 },
+    prediction: 'Less eardrum compliance should stiffen the eardrum branch and alter the middle-frequency transfer around the broad peak.',
     observationPrompt: 'Compare the 500–2,000 Hz transfer and the broad peak location.',
   },
   {

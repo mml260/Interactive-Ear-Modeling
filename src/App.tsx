@@ -6,7 +6,7 @@ import { Complex } from './physics/core/complex'
 import { calculateMiddleEarAtFrequency, calculateMiddleEarResponse } from './physics/middleEar/calculateMiddleEar'
 import { formalExperiments, formalExperimentResults } from './physics/middleEar/experiments'
 import { createOmeScenario, omeScenarioEvidence } from './physics/middleEar/omeScenario'
-import { createMiddleEarParameters, zwislockiBaselineParameters } from './physics/middleEar/parameters'
+import { createMiddleEarParameters, lutmanMartinFinalParameters } from './physics/middleEar/parameters'
 import { calculateOuterEarAtFrequency, calculateOuterEarResponse } from './physics/outerEar/calculateOuterEar'
 import { createOuterEarParameters } from './physics/outerEar/parameters'
 
@@ -28,13 +28,13 @@ const outerControls: Control[] = [
 ]
 const middleControls: Control[] = [
   { id: 'ossicularInertance', label: 'Ossicular inertance', min: 20, max: 80, step: 1, unit: 'mH' },
-  { id: 'eardrumCompliance', label: 'Eardrum compliance', min: 0.08, max: 0.5, step: 0.01, unit: 'μF' },
+  { id: 'eardrumCompliance', label: 'Eardrum compliance', min: 0.1, max: 2, step: 0.05, unit: 'μF' },
   { id: 'ossicularLoss', label: 'Ossicular loss', min: 20, max: 300, step: 5, unit: 'Ω' },
   { id: 'omeSeverity', label: 'OME severity', min: 0, max: 1, step: 0.05, unit: ' / 1' },
 ]
 const initialValues: Record<string, number> = {
   canalLength: 25, canalDiameter: 7.5, conchaDepth: 12, conchaVolume: 10, azimuth: 0, elevation: 0,
-  ossicularInertance: 40, eardrumCompliance: 0.23, ossicularLoss: 70, omeSeverity: 0,
+  ossicularInertance: 40, eardrumCompliance: 0.8, ossicularLoss: 70, omeSeverity: 0,
 }
 const responseLabels: Record<ResponseKey, string> = {
   outer: 'Outer-ear response', middle: 'Middle-ear response', combined: 'Connected response',
@@ -255,7 +255,7 @@ function App() {
     setValues((current) => ({
       ...current,
       ossicularInertance: (experiment.overrides.lo ?? 40e-3) * 1e3,
-      eardrumCompliance: (experiment.overrides.cd1 ?? 0.23e-6) * 1e6,
+      eardrumCompliance: (experiment.overrides.cd1 ?? 0.8e-6) * 1e6,
       ossicularLoss: experiment.overrides.ro ?? 70,
       omeSeverity: 0,
     }))
@@ -276,7 +276,7 @@ function App() {
           <div className="slider-list">{controls.map((control) => <Slider control={control} key={control.id} onChange={(value) => updateValue(control.id, value)} value={values[control.id]} />)}</div>
           {activeModule === 'middle' && <section className="formal-experiments"><h3>Explore parameter changes</h3><p>Each case resets the other two controls to baseline and turns off OME, so only one parameter changes.</p><div className="experiment-list">{formalExperiments.map((experiment, index) => { const result = formalExperimentResults[index]; const atOneKilohertz = result.changesAtHz.find((point) => point.frequencyHz === 1000)?.deltaDb ?? 0; return <article className="experiment-case" key={experiment.id}><div><span>{experiment.number} · {experiment.parameter}</span><strong>{experiment.title}</strong><small>{experiment.baselineDisplay} → {experiment.changedDisplay}</small></div><button onClick={() => loadFormalExperiment(experiment)} type="button">Load case</button><p><b>Prediction:</b> {experiment.prediction}</p><p><b>Verified result:</b> peak {result.baselinePeakHz.toFixed(0)} → {result.changedPeakHz.toFixed(0)} Hz; Δ at 1 kHz {atOneKilohertz >= 0 ? '+' : ''}{atOneKilohertz.toFixed(2)} dB.</p></article> })}</div></section>}
           {activeModule === 'middle' && <section className="ome-scenario"><h3>Small-child OME transfer scenario</h3><p>{model.omeScenario.description} At full severity, the profile reduces eardrum and joint compliance while increasing ossicular inertance and loss.</p><p className="ome-disclaimer">Educational sensitivity model only. It is not a pediatric normative fit, diagnosis, or patient simulation.</p><p className="ome-sources">Evidence basis: {omeScenarioEvidence.sources.map((source) => source.replace(/, DOI:.+/, '')).join(' · ')}</p></section>}
-          <details className="advanced-options"><summary><span>Advanced model options</span><small>Source-tagged values</small></summary><div className="advanced-content"><p>Replaceable Zwislocki-style baseline. Values are retained in SI units inside the model.</p><dl>{zwislockiBaselineParameters.map((parameter) => <div key={parameter.id}><dt>{parameter.symbol}</dt><dd>{parameter.displayValue} {parameter.displayUnit} · {parameter.subsystem}</dd></div>)}</dl></div></details>
+          <details className="advanced-options"><summary><span>Advanced model options</span><small>Source-tagged values</small></summary><div className="advanced-content"><p>Lutman &amp; Martin final fitted-model values (Figure 12 and Table 1). Values are retained in SI units inside the model.</p><dl>{lutmanMartinFinalParameters.map((parameter) => <div key={parameter.id}><dt>{parameter.symbol}</dt><dd>{parameter.displayValue} {parameter.displayUnit} · {parameter.subsystem}</dd></div>)}</dl></div></details>
         </aside>
         <section className="analysis-column">
           <article className="response-card">
