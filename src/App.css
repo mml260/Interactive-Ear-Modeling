@@ -57,10 +57,10 @@ h2 { margin-bottom: 0; color: #102954; font-size: 1.08rem; font-weight: 700; lin
 .slider-heading output { color: #1b4f91; font-family: 'DM Mono', monospace; font-size: 0.68rem; font-weight: 500; }
 .slider-control input { width: 100%; height: 4px; margin: 0; accent-color: #255290; }
 .slider-limits { justify-content: space-between; color: #89a0bd; font-family: 'DM Mono', monospace; font-size: 0.57rem; }
-.formal-experiments { margin-top: 16px; padding: 14px; border: 1px solid #c7d8ec; border-radius: 10px; background: #edf4fb; }
+.formal-experiments, .hrtf-test-cases { margin-top: 16px; padding: 14px; border: 1px solid #c7d8ec; border-radius: 10px; background: #edf4fb; }
 .formal-experiments .eyebrow { margin-bottom: 6px; color: #5273a5; }
-.formal-experiments h3 { margin: 0 0 6px; color: #17437c; font-family: 'Newsreader', Georgia, serif; font-size: 1.02rem; font-weight: 650; letter-spacing: -0.025em; }
-.formal-experiments > p { margin-bottom: 10px; color: #587091; font-size: 0.69rem; line-height: 1.45; }
+.formal-experiments h3, .hrtf-test-cases h3 { margin: 0 0 6px; color: #17437c; font-family: 'Newsreader', Georgia, serif; font-size: 1.02rem; font-weight: 650; letter-spacing: -0.025em; }
+.formal-experiments > p, .hrtf-test-cases > p { margin-bottom: 10px; color: #587091; font-size: 0.69rem; line-height: 1.45; }
 .experiment-list { display: grid; gap: 8px; }
 .experiment-case { display: grid; grid-template-columns: 1fr auto; gap: 7px 10px; padding: 10px; border: 1px solid #d4e0ee; border-radius: 8px; background: #fff; }
 .experiment-case span, .experiment-case small { display: block; color: #6a84a4; font-family: 'DM Mono', monospace; font-size: 0.54rem; line-height: 1.4; }
@@ -116,6 +116,13 @@ h2 { margin-bottom: 0; color: #102954; font-size: 1.08rem; font-weight: 700; lin
 .plot-axis-x { grid-column: 2; justify-content: space-between; padding-top: 7px; }
 .plot-caption { justify-content: space-between; gap: 15px; color: #7289a6; font-size: 0.66rem; }
 .plot-caption span:last-child { text-align: right; }
+.plot-export-actions { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 13px; }
+.plot-export-actions button { padding: 7px 9px; border: 1px solid #aac2dd; border-radius: 7px; color: #285486; background: #f7fbff; font-size: 0.62rem; font-weight: 700; cursor: pointer; }
+.plot-export-actions button:hover { border-color: #4776ac; background: #edf5fc; }
+.compact-response-plot { min-height: 270px; margin-top: 12px; }
+.compact-response-plot svg { height: 250px; }
+.compact-response-plot .plot-legend { margin-left: 40px; }
+.plot-zero-line { stroke: #b2c6dd; stroke-dasharray: 4 4; stroke-width: 1; }
 
 .lower-panels { align-items: stretch; gap: 18px; }
 .spectrogram-card, .model-card { flex: 1; padding: 20px; }
@@ -132,6 +139,21 @@ h2 { margin-bottom: 0; color: #102954; font-size: 1.08rem; font-weight: 700; lin
 .outer-node { border: 1px solid #bdd0e9; color: #285486; background: #e9f1fa; }
 .middle-node { border: 1px solid #b5d8d1; color: #226357; background: #e5f3f0; }
 .model-path > i { color: #32619b; font-size: 1rem; font-style: normal; }
+
+.binaural-panels { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 18px; }
+.binaural-card { min-width: 0; padding: 20px; border: 1px solid rgb(255 255 255 / 0.62); border-radius: 17px; background: #f8fbff; box-shadow: 0 18px 40px rgb(10 34 76 / 0.22); }
+.binaural-card .eyebrow { color: #5273a5; }
+.binaural-card h2 { font-size: 0.97rem; }
+.hrir-plot { position: relative; min-height: 209px; margin-top: 16px; }
+.hrir-plot svg { display: block; width: 100%; height: 190px; overflow: visible; }
+.hrir-plot .plot-legend { margin: -2px 0 0 40px; }
+.cue-summary { grid-column: 1 / -1; display: grid; grid-template-columns: 0.8fr 1.2fr; column-gap: 28px; }
+.cue-summary .eyebrow, .cue-summary h2 { grid-column: 1 / -1; }
+.cue-summary dl { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin: 16px 0 0; }
+.cue-summary dl div { padding: 10px; border: 1px solid #d5e3f1; border-radius: 8px; background: #eff5fb; }
+.cue-summary dt { color: #5b7799; font-family: 'DM Mono', monospace; font-size: 0.55rem; text-transform: uppercase; }
+.cue-summary dd { margin: 4px 0 0; color: #244e82; font-family: 'DM Mono', monospace; font-size: 0.77rem; font-weight: 500; }
+.cue-summary > p { align-self: end; margin: 16px 0 0; color: #56718f; font-size: 0.7rem; line-height: 1.5; }
 
 .audio-dock { justify-content: space-between; gap: 22px; margin-top: 18px; padding: 18px 21px; border: 1px solid rgb(219 237 255 / 0.42); border-radius: 15px; background: #12396e; box-shadow: 0 14px 30px rgb(9 29 64 / 0.2); }
 .audio-dock .eyebrow { margin-bottom: 5px; color: #9ebee5; }
@@ -162,6 +184,8 @@ h2 { margin-bottom: 0; color: #102954; font-size: 1.08rem; font-weight: 700; lin
   .control-panel { display: block; }
   .slider-list { display: grid; }
   .lower-panels { flex-direction: column; gap: 14px; }
+  .binaural-panels { grid-template-columns: 1fr; gap: 14px; }
+  .cue-summary { grid-column: auto; grid-template-columns: 1fr; }
   .audio-dock { align-items: flex-start; flex-direction: column; }
   .audio-buttons { justify-content: flex-start; }
   .response-heading { align-items: flex-start; flex-direction: column; }

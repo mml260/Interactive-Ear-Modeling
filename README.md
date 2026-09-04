@@ -4,7 +4,7 @@ A standalone, browser-based educational simulator for the outer ear, middle ear,
 
 ## Current scope
 
-HW2 only: a complex-valued middle-ear circuit model, validated outer-ear port, response comparison, experiments, audio rendering, spectrograms, and an educational 3D view. HW3 is architecture-only until explicitly authorized.
+HW1–3: an outer-ear model, a complex-valued middle-ear circuit model, and a synthetic bilateral HRTF/HRIR renderer. The HW3 view provides fixed median-plane, lateral, and elevated comparison cases, HRTF/HRIR/ILD displays, stereo rendering, and WAV exports for both rendered audio and the raw HRIR pair.
 
 ## Development commands
 
@@ -16,7 +16,7 @@ pnpm lint
 
 ## Documentation
 
-The HW2 circuit topology, transfer definition, source policy, and provisional baseline values are documented in [`docs/hw2-model-spec.md`](docs/hw2-model-spec.md).
+The HW2 circuit topology, transfer definition, source policy, and provisional baseline values are documented in [`docs/hw2-model-spec.md`](docs/hw2-model-spec.md). The HW3 synthetic HRTF/HRIR model and its assumptions are documented in [`docs/hw3-model-spec.md`](docs/hw3-model-spec.md).
 
 ## Architecture direction
 
